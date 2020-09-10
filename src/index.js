@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-// import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 const comment = {
@@ -50,7 +49,7 @@ function ActionLink() {
   }
 
   return (
-    <a href="#" onClick={handleClick}>
+    <a href="https://www.google.com" onClick={handleClick}>
       Нажми на меня!
     </a>
   );
@@ -108,27 +107,6 @@ function Greeting(props) {
   return <GuestGreeting></GuestGreeting>;
 }
 
-function App() {
-  return (
-    <div>
-      <Comment
-        date={comment.date}
-        text={comment.text}
-        author={comment.author}
-      />
-      <Clock></Clock>
-
-      <ActionLink></ActionLink>
-      <br></br>
-      <Toggle></Toggle>
-      <br></br>
-      <LoggingButton></LoggingButton>
-      <br></br>
-      <Greeting isLoggedIn={true} user="Алан"></Greeting>
-    </div>
-  );
-}
-
 class Clock extends React.Component {
   constructor(props) {
     super(props);
@@ -155,6 +133,102 @@ class Clock extends React.Component {
       </div>
     );
   }
+}
+
+function LoginButton(props) {
+  return (
+    <button
+      className="button button--default button__login"
+      onClick={props.onClick}
+    >
+      Войти
+    </button>
+  );
+}
+
+function LogoutButton(props) {
+  return (
+    <button
+      className="button button--default button__logout"
+      onClick={props.onClick}
+    >
+      Выйти
+    </button>
+  );
+}
+
+class LoginControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.state = { isLoggedIn: false };
+  }
+
+  handleLoginClick() {
+    this.setState({ isLoggedIn: true });
+  }
+
+  handleLogoutClick() {
+    this.setState({ isLoggedIn: false });
+  }
+
+  render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    let button;
+    if (isLoggedIn) {
+      button = <LogoutButton onClick={this.handleLogoutClick} />;
+    } else {
+      button = <LoginButton onClick={this.handleLoginClick} />;
+    }
+
+    return (
+      <div>
+        <Greeting isLoggedIn={isLoggedIn} user="Алан"></Greeting>
+        {button}
+      </div>
+    );
+  }
+}
+
+function Mailbox(props) {
+  const unreadMessages = props.unreadMessages;
+
+  return (
+    <div>
+      <h1>Привет!</h1>
+      {unreadMessages.length > 0 && (
+        <h2>У вас {unreadMessages.length} сообщений.</h2>
+      )}
+    </div>
+  );
+}
+//length
+const messages = ["React", "Reacttt", "Avavion", "Kate Dmt"];
+
+function App() {
+  return (
+    <div>
+      <Comment
+        date={comment.date}
+        text={comment.text}
+        author={comment.author}
+      />
+      <Clock></Clock>
+
+      <ActionLink></ActionLink>
+      <br></br>
+      <Toggle></Toggle>
+      <br></br>
+      <LoggingButton></LoggingButton>
+      <br></br>
+      <Greeting isLoggedIn={true} user="Алан"></Greeting>
+      <br></br>
+      <LoginControl />
+      <br></br>
+      <Mailbox unreadMessages={messages}></Mailbox>
+    </div>
+  );
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
