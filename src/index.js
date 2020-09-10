@@ -43,6 +43,71 @@ function UserInfo(props) {
   );
 }
 
+function ActionLink() {
+  function handleClick(event) {
+    event.preventDefault();
+    console.log("По ссылке кликнули");
+  }
+
+  return (
+    <a href="#" onClick={handleClick}>
+      Нажми на меня!
+    </a>
+  );
+}
+
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isToggleOn: true,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState((state) => ({
+      isToggleOn: !state.isToggleOn,
+    }));
+  }
+
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? "Включено" : "Выключено"}
+      </button>
+    );
+  }
+}
+
+class LoggingButton extends React.Component {
+  handleClick = () => {
+    console.log("Значение this: ", this);
+  };
+
+  render() {
+    return <button onClick={this.handleClick}>Нажми на меня!!!!!</button>;
+  }
+}
+
+function UserGreeting(props) {
+  return <h1>Привет, {props.name}!</h1>;
+}
+
+function GuestGreeting() {
+  return <h1>Войдите, пожалуйста</h1>;
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+
+  if (isLoggedIn) {
+    return <UserGreeting name={props.user}></UserGreeting>;
+  }
+  return <GuestGreeting></GuestGreeting>;
+}
+
 function App() {
   return (
     <div>
@@ -52,6 +117,14 @@ function App() {
         author={comment.author}
       />
       <Clock></Clock>
+
+      <ActionLink></ActionLink>
+      <br></br>
+      <Toggle></Toggle>
+      <br></br>
+      <LoggingButton></LoggingButton>
+      <br></br>
+      <Greeting isLoggedIn={true} user="Алан"></Greeting>
     </div>
   );
 }
@@ -87,3 +160,6 @@ class Clock extends React.Component {
 ReactDOM.render(<App />, document.getElementById("root"));
 
 serviceWorker.unregister();
+
+// https://ru.reactjs.org/docs/conditional-rendering.html
+// Рассмотрим ещё два компонента, представляющих кнопки Войти (Login) и Выйти (Logout).
